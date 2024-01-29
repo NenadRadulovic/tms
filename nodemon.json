@@ -1,0 +1,10 @@
+{
+  "watch": ["src"],
+  "ext": "ts, json",
+  "exec": "tsc && tsc-alias && ts-node --esm ./dist/index.js",
+  "verbose": true,
+  "ignore": [],
+  "execMap": {
+    "ts": "node --inspect=0.0.0.0:9229 --nolazy -r ts-node/register"
+  }
+}

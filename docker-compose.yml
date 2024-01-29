@@ -1,0 +1,50 @@
+version: "3.0"
+services:
+  app:
+    container_name: tms-api
+    build: ./
+    networks:
+      - db
+    depends_on:
+      - db
+    working_dir: /usr/src/app
+    volumes:
+      - .:/usr/src/app
+      - ./node_modules:/usr/src/app/node_modules/
+    ports:
+      - 5000:5000
+  db:
+    container_name: tms-db
+    image: postgres
+    networks:
+      - db
+    ports:
+      - 5432:5432
+    volumes:
+      - db:/data/db
+      - ./scripts:/docker-entrypoint-initdb.d
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DATABASES=tms_dev,tms_test
+
+  pgadmin:
+    image: dpage/pgadmin4:6.18
+    container_name: tms-pgadmin
+    networks:
+      - db
+    restart: always
+    ports:
+      - "8888:80"
+    env_file:
+      - .env
+    volumes:
+      - pgadmin:/data/pgadmin
+
+volumes:
+  db:
+  pgadmin:
+
+networks:
+  db:
+    driver: bridge

@@ -1,0 +1,49 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl-arm64-openssl-3.0.x"]
+  // binaryTargets = ["native", "darwin-arm64"]
+}
+
+model User {
+  id               Int      @id @default(autoincrement())
+  email            String   @unique()
+  first_name       String
+  last_name        String
+  password         String
+  role             Role
+  tickets          Ticket[] @relation("Ticket_user")
+  assigned_tickets Ticket[] @relation("Ticket_assigned_admin")
+  created_at       DateTime @default(now())
+  updated_at       DateTime
+}
+
+model Ticket {
+  id                Int          @id @default(autoincrement())
+  title             String
+  description       String
+  status            TicketStatus
+  resolved_message  String?
+  created_at        DateTime     @default(now())
+  updated_at        DateTime
+  assigned_admin    User?        @relation("Ticket_assigned_admin", references: [id], fields: [assigned_admin_id])
+  assigned_admin_id Int?
+  user              User         @relation("Ticket_user", references: [id], fields: [user_id])
+  user_id           Int
+}
+
+enum Role {
+  Admin
+  Worker
+}
+
+enum TicketStatus {
+  Open
+  Closed
+  On_Hold
+  Solved
+}

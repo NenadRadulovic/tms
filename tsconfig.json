@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "target": "ESNext",
+    "module": "ESNext",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "strict": true,
+    // "moduleResolution": "bundler", // Option '--resolveJsonModule' cannot be specified without 'node' module resolution strategy.
+    "moduleResolution":"node",
+    "resolveJsonModule": true,
+    "pretty": true,
+    "baseUrl": ".",
+    "sourceMap": true,
+    "outDir": "dist",
+    "paths": {
+      "@services/*": ["src/services/*"],
+      "@routes/*": ["src/routes/*"],
+    },
+  },
+  "include": ["src/**/*", "./src/**/*"],
+  "exclude": ["node_modules"],
+  "ts-node": {
+    "esm": true,
+  },
+  "tsc-alias": {
+    "resolveFullPaths": true,
+    "verbose": false
+  }
+}
