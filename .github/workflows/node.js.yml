@@ -27,5 +27,11 @@ jobs:
         cache: 'npm'
     - name: Create Env
       run: echo "{{secrets.ENV_FILe}}" > .env
-    - name: Run start script
-      run: ./tms-start.sh
+    - name: Create containers
+      run: docker-compose up --build
+    - name: Migrate prisma
+      run: |
+        docker-compose exec -it app npx prisma generate
+        docker-compose exec -it app npx prisma migrate deploy
+    - name: Run tests
+      run: docker-compose exec -it app npm run test
