@@ -30,10 +30,6 @@ jobs:
         echo "{{secrets.ENV_FILE}}" > .env
         echo "{{secrets.ENV_TEST_FILE}}" > .env.test
     - name: Create containers
-      run: docker-compose up --build
-    - name: Migrate prisma
-      run: |
-        docker-compose exec -it app npx prisma generate
-        docker-compose exec -it app npx prisma migrate deploy
+      run: ./tms-start.sh
     - name: Run tests
       run: docker-compose exec -it app npm run test
