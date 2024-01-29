@@ -11,7 +11,6 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     strategy:
@@ -26,4 +25,7 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
-    - run: ./tms-start.sh
+    - name: Create Env
+      run: echo "{{secrets.ENV_FILe}}" > .env
+    - name: Run start script
+      run: ./tms-start.sh
