@@ -39,8 +39,18 @@ jobs:
         docker-compose exec -it app npm run prisma migrate deploy
     - name: Generate test DB
       run: docker-compose exec -it app npm run dotenv -e .env.test -- npm run prisma db push --accept-data-loss
-    - name: Run tests
-      run: echo docker-compose exec -it app npm run test
+    # - name: Run tests
+    #   run: docker-compose exec -it app npm run test
+    - uses: actions/checkout@v3
+    - uses: adambirds/docker-compose-action@v1.3.0
+      with:
+        compose-file: "./docker-compose.yml"
+        down-flags: "--volumes"
+        services: |
+          app
+          db
+        test-container: app
+        test-command: "npm run test"
     - name: Stop containers
       if: always()
       run: docker-compose -f "./docker-compose.yml" down
