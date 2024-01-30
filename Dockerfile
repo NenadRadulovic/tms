@@ -11,8 +11,8 @@ RUN npm install
 
 # COPY src/prisma ./usr/src/app/src/prisma
 
-RUN npm prisma generate
-RUN npm prisma migrate deploy
+RUN npm run prisma generate
+RUN npm run prisma migrate deploy
 
 COPY . .
 
