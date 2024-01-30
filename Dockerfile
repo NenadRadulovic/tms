@@ -19,7 +19,9 @@ COPY --from=builder /usr/src/app/node_modules ./node_modules
 COPY --from=builder /usr/src/app/package*.json ./
 COPY --from=builder /usr/src/app/prisma ./prisma
 
-# RUN npm dotenv -e .env.test -- npm run prisma db push --accept-data-loss
+RUN npm run prisma generate
+# RUN npm run prisma migrate deploy
+# RUN npm run dotenv -e .env.test -- npm run prisma db push --accept-data-loss
 
 EXPOSE 5000
 CMD [ "npm", "run", "start:dev" ]
