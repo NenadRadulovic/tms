@@ -37,7 +37,7 @@ jobs:
         DATABASE_URL: "{{secrets.DATABASE_URL}}"
       with:
         compose-file: "./docker-compose.yml"
-        up-flags: "--env-file=./.env"
+        up-flags: "--env-file=./.env --force-recreate "
         down-flags: "--volumes"
         services: |
           app
