@@ -31,22 +31,26 @@ jobs:
         echo "{{secrets.ENV_TEST_FILE}}" > .env.test
 
     - name: Docker compose Up
+      id: docker-build
       uses: adambirds/docker-compose-action@v1.3.0
       env:
         DATABASE_URL: "{{secrets.DATABASE_URL}}"
       with:
         compose-file: "./docker-compose.yml"
-        up-flahs: "--env-file=./.env"
+        up-flags: "--env-file=./.env"
         down-flags: "--volumes"
         services: |
           app
           db
-        test-container: app
-        test-command: "npm run prisma:migrate && npm run prisma:test-setup && npm run test"
-    # - name: Generate Prisma Client
-    #   run: |
-    #     docker-compose exec -it app npm run prisma migrate deploy
-    # - name: Generate test DB
-    #   run: docker-compose exec -it app npm run dotenv -e .env.test -- npm run prisma db push --accept-data-loss
-    # - name: Run tests
-    #   run: docker-compose exec -it app npm run test
+    - name: Generate Prisma Client
+      id: prisma-client
+      if: steps.docker-build.outcome == 'success'
+      run: |
+        docker-compose exec -it app npm run prisma migrate deploy
+    - name: Generate test DB
+      id: test-db
+      if: steps.prisma-client.outcome == 'success'
+      run: docker-compose exec -it app npm run dotenv -e .env.test -- npm run prisma db push --accept-data-loss
+    - name: Run tests
+      if: steps.test-db.outcome == 'success'
+      run: docker-compose exec -it app npm run test
