@@ -8,6 +8,8 @@
     "test": "dotenv -e .env.test -- vitest --config ./vitest-config.ts",
     "build": "tsc",
     "prisma": "prisma",
+    "prisma:migrate": "prisma migrate deploy",
+    "prisma:test-setup": "dotenv -e .env.test -- prisma db push --accept-data-loss",
     "dotenv": "dotenv",
     "start:dev": "nodemon",
     "lint": "eslint --cache \"src/**/*.{js,jsx,ts,tsx}\"",
