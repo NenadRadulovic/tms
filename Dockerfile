@@ -8,8 +8,6 @@ COPY package*.json ./
 
 # Install app dependencies
 RUN npm install
-RUN npm i -g prisma 
-RUN npm i -g dotenv 
 
 # COPY src/prisma ./usr/src/app/src/prisma
 

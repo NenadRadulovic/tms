@@ -7,6 +7,7 @@
   "scripts": {
     "test": "dotenv -e .env.test -- vitest --config ./vitest-config.ts",
     "build": "tsc",
+    "prisma": "prisma",
     "start:dev": "nodemon",
     "lint": "eslint --cache \"src/**/*.{js,jsx,ts,tsx}\"",
     "lint:fix": "eslint --cache --fix \"src/**/*.{js,jsx,ts,tsx}\""
