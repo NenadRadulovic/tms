@@ -30,6 +30,6 @@ jobs:
         echo "{{secrets.ENV_FILE}}" > .env
         echo "{{secrets.ENV_TEST_FILE}}" > .env.test
     - name: Create containers
-      run: ./tms-start.sh
+      run: docker-compose up --build
     - name: Run tests
       run: echo docker-compose exec -it app npm run test

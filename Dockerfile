@@ -8,6 +8,8 @@ COPY package*.json ./
 
 # Install app dependencies
 RUN npm install
+RUN npm i -g prisma 
+RUN npm i -g dotenv 
 
 # COPY src/prisma ./usr/src/app/src/prisma
 
@@ -23,6 +25,8 @@ FROM node:20.2-alpine
 COPY --from=builder /usr/src/app/node_modules ./node_modules
 COPY --from=builder /usr/src/app/package*.json ./
 COPY --from=builder /usr/src/app/dist ./dist
+
+RUN npm dotenv -e .env.test -- npm prisma db push --accept-data-loss
 
 EXPOSE 5000
 CMD [ "npm", "run", "start:dev" ]
