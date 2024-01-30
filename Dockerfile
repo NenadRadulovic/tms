@@ -18,6 +18,8 @@ FROM node:20.2-alpine
 COPY --from=builder /usr/src/app/node_modules ./node_modules
 COPY --from=builder /usr/src/app/package*.json ./
 COPY --from=builder /usr/src/app/prisma ./prisma
+COPY --from=builder /usr/src/app/.env ./.env
+COPY --from=builder /usr/src/app/.env.test ./.env.test
 
 RUN npm run prisma generate
 # RUN npm run prisma migrate deploy
