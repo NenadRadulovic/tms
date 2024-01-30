@@ -9,7 +9,7 @@ COPY package*.json ./
 # Install app dependencies
 RUN npm install
 
-# COPY src/prisma ./usr/src/app/src/prisma
+COPY src/prisma ./usr/src/app/src/prisma
 
 RUN npm run prisma generate
 RUN npm run prisma migrate deploy
@@ -24,7 +24,7 @@ COPY --from=builder /usr/src/app/node_modules ./node_modules
 COPY --from=builder /usr/src/app/package*.json ./
 COPY --from=builder /usr/src/app/dist ./dist
 
-RUN npm dotenv -e .env.test -- npm prisma db push --accept-data-loss
+RUN npm dotenv -e .env.test -- npm run prisma db push --accept-data-loss
 
 EXPOSE 5000
 CMD [ "npm", "run", "start:dev" ]
