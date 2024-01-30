@@ -12,19 +12,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        node-version: [20.x]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
-
     steps:
     - uses: actions/checkout@v3
-    # - name: Use Node.js ${{ matrix.node-version }}
-    #   uses: actions/setup-node@v3
-    #   with:
-    #     node-version: ${{ matrix.node-version }}
-    #     cache: 'npm'
     - name: Create Env
       run: |
         echo "{{secrets.ENV_FILE}}" > .env
@@ -37,7 +26,7 @@ jobs:
         DATABASE_URL: "{{secrets.DATABASE_URL}}"
       with:
         compose-file: "./docker-compose.yml"
-        up-flags: "--env-file=./.env --force-recreate "
+        up-flags: "--build --env-file=./.env"
         down-flags: "--volumes"
         services: |
           app
