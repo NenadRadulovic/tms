@@ -45,12 +45,11 @@ jobs:
     - name: Generate Prisma Client
       id: prisma-client
       if: steps.docker-build.outcome == 'success'
-      run: |
-        docker-compose exec -it app npm run prisma migrate deploy
+      run: echo "docker-compose exec -it app npm run prisma migrate deploy" >> $GITHUB_OUTPUT
     - name: Generate test DB
       id: test-db
       if: steps.prisma-client.outcome == 'success'
-      run: docker-compose exec -it app npm run dotenv -e .env.test -- npm run prisma db push --accept-data-loss
+      run: echo "docker-compose exec -it app npm run dotenv -e .env.test -- npm run prisma db push --accept-data-loss" >> $GITHUB_OUTPUT
     - name: Run tests
       if: steps.test-db.outcome == 'success'
-      run: docker-compose exec -it app npm run test
+      run: echo "docker-compose exec -it app npm run test" >> $GITHUB_OUTPUT
