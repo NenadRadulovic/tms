@@ -30,7 +30,7 @@ jobs:
         echo "{{secrets.ENV_FILE}}" > .env
         echo "{{secrets.ENV_TEST_FILE}}" > .env.test
     - name: Create containers
-      run: docker-compose up --build
+      run: docker-compose up --build -b
     - name: Generate Prisma Client
       run: |
         npm run prisma migrate deploy
