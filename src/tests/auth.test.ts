@@ -15,6 +15,9 @@ beforeEach(async () => {
 });
 
 describe('Auth endpoint', async () => {
+  it('fails!', () => {
+    expect(true).toBe(false);
+  });
   it('Registers user', async () => {
     const userData = {
       email: 'testuser2@yopmail.com',
