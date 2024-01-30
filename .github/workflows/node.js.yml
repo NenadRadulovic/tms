@@ -30,19 +30,8 @@ jobs:
         echo "{{secrets.ENV_FILE}}" > .env
         echo "{{secrets.ENV_TEST_FILE}}" > .env.test
 
-    - uses: actions/checkout@v3
-    - uses: isbang/compose-action@v1.5.1
-      with:
-        compose-file: "./docker-compose.yml"
-    - name: Generate Prisma Client
-      run: |
-        docker-compose exec -it app npm run prisma migrate deploy
-    - name: Generate test DB
-      run: docker-compose exec -it app npm run dotenv -e .env.test -- npm run prisma db push --accept-data-loss
-    # - name: Run tests
-    #   run: docker-compose exec -it app npm run test
-    - uses: actions/checkout@v3
-    - uses: adambirds/docker-compose-action@v1.3.0
+    - name: Docker compose Up
+      uses: adambirds/docker-compose-action@v1.3.0
       with:
         compose-file: "./docker-compose.yml"
         down-flags: "--volumes"
@@ -50,7 +39,11 @@ jobs:
           app
           db
         test-container: app
-        test-command: "npm run test"
-    - name: Stop containers
-      if: always()
-      run: docker-compose -f "./docker-compose.yml" down
+        test-command: "npm run dotenv -e .env.test -- npm run prisma db push --accept-data-loss && npm run test"
+    # - name: Generate Prisma Client
+    #   run: |
+    #     docker-compose exec -it app npm run prisma migrate deploy
+    # - name: Generate test DB
+    #   run: docker-compose exec -it app npm run dotenv -e .env.test -- npm run prisma db push --accept-data-loss
+    # - name: Run tests
+    #   run: docker-compose exec -it app npm run test

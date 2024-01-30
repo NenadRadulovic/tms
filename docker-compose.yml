@@ -28,22 +28,22 @@ services:
       - POSTGRES_PASSWORD=admin
       - POSTGRES_DATABASES=tms_dev,tms_test
 
-  # pgadmin:
-  #   image: dpage/pgadmin4:6.18
-  #   container_name: tms-pgadmin
-  #   networks:
-  #     - db
-  #   restart: always
-  #   ports:
-  #     - "8888:80"
-  #   env_file:
-  #     - .env
-  #   volumes:
-  #     - pgadmin:/data/pgadmin
+  pgadmin:
+    image: dpage/pgadmin4:6.18
+    container_name: tms-pgadmin
+    networks:
+      - db
+    restart: always
+    ports:
+      - "8888:80"
+    env_file:
+      - .env
+    volumes:
+      - pgadmin:/data/pgadmin
 
 volumes:
   db:
-  # pgadmin:
+  pgadmin:
 
 networks:
   db:
