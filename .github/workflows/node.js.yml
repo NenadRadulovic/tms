@@ -32,6 +32,8 @@ jobs:
 
     - name: Docker compose Up
       uses: adambirds/docker-compose-action@v1.3.0
+      env:
+        DATABASE_URL: "{{secrets.DATABASE_URL}}"
       with:
         compose-file: "./docker-compose.yml"
         down-flags: "--volumes"
