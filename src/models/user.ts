@@ -1,5 +1,5 @@
 import { User } from '@prisma/client';
-import client from '../prisma/client';
+import client from '@dbPrisma/client';
 import { isNull } from 'lodash-es';
 
 const createUser = async (userData: User): Promise<User | undefined> => {

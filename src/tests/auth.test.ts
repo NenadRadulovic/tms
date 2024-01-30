@@ -2,7 +2,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import request from 'supertest';
 import app from '../index';
-import client from '../prisma/client';
+import client from '@dbPrisma/client';
 import { generateJWT } from '../helpers/generate-jwt-token';
 
 vi.mock('../prisma/client');

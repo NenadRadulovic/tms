@@ -13,6 +13,6 @@ echo "Generating db tables"
 echo ""
 docker-compose exec app npx prisma generate
 docker-compose exec app npx prisma migrate deploy
-docker-compose exec app npm dotenv -e .env.test -- npm prisma db push --accept-data-loss
+docker-compose exec app npx dotenv -e .env.test -- npm run prisma db push --accept-data-loss
 echo ""
 echo "Done. TMS up and running"

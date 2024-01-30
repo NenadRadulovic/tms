@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const globalAny = global;
 import { PrismaClient } from '@prisma/client';
 if (!globalAny.__db) {

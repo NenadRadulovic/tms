@@ -1,6 +1,6 @@
 import { UserDTO } from '../common/user-types';
 import { User } from '@prisma/client';
-import client from '../prisma/client';
+import client from '@dbPrisma/client';
 import { isNull } from 'lodash-es';
 
 //TODO implement DB query calls

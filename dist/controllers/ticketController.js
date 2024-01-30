@@ -1,4 +1,4 @@
-import ticketService from '../services/ticketService.js';
+import ticketService from '../src/services/ticketService.js';
 import { get } from 'lodash-es';
 export const getAllTickets = async (req, res) => {
     try {
