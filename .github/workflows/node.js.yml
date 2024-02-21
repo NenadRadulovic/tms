@@ -38,8 +38,9 @@ jobs:
       - name: Check out repository code
         uses: actions/checkout@v4
 
-      - name: Create .env file
-        run: echo $DEV_ENV | base64 --decode > .env
+      - name: "Create .env file"
+        run: "echo {{secrets.DEV_ENV}} | base64 --decode > .env"
+
       # Performs a clean installation of all dependencies in the `package.json` file
       # For more information, see https://docs.npmjs.com/cli/ci.html
       - name: Install dependencies
