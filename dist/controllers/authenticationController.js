@@ -1,5 +1,5 @@
 import { generateJWT } from '../helpers/generate-jwt-token.js';
-import userService from '../services/userService.js';
+import userService from '../src/services/userService.js';
 import { get } from 'lodash-es';
 export const register = async (req, res) => {
     try {
