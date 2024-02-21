@@ -30,9 +30,9 @@ model Ticket {
   resolved_message  String?
   created_at        DateTime     @default(now())
   updated_at        DateTime
-  assigned_admin    User?        @relation("Ticket_assigned_admin", references: [id], fields: [assigned_admin_id])
+  assigned_admin    User?        @relation("Ticket_assigned_admin", references: [id], fields: [assigned_admin_id], onDelete: SetNull)
   assigned_admin_id Int?
-  user              User         @relation("Ticket_user", references: [id], fields: [user_id])
+  user              User         @relation("Ticket_user", references: [id], fields: [user_id], onDelete: Cascade)
   user_id           Int
 }
 
