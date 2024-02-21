@@ -54,6 +54,6 @@ jobs:
         run: |
           npx prisma generate
           npx prisma migrate deploy
-          npx run prisma db push --accept-data-loss
+          npx prisma db push --accept-data-loss
       - name: Tests
         run: npm run test
