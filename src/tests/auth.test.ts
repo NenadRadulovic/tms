@@ -1,5 +1,5 @@
 // test/sample.test.ts
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterAll, describe, expect, it, vi } from 'vitest';
 import request from 'supertest';
 import app from '../index';
 import client from '@dbPrisma/client';
@@ -7,17 +7,11 @@ import { generateJWT } from '../helpers/generate-jwt-token';
 
 vi.mock('../prisma/client');
 
-beforeEach(async () => {
-  await client.$transaction([
-    client.user.deleteMany(),
-    client.ticket.deleteMany(),
-  ]);
+afterAll(async () => {
+  await client.$transaction([client.user.deleteMany()]);
 });
 
 describe('Auth endpoint', async () => {
-  // it('fails!', () => {
-  //   expect(true).toBe(false);
-  // });
   it('Registers user', async () => {
     const userData = {
       email: 'testuser2@yopmail.com',
@@ -38,7 +32,7 @@ describe('Auth endpoint', async () => {
   });
   it('Logs in user', async () => {
     const userData = {
-      email: 'testuser2@yopmail.com',
+      email: 'loginUser@yopmail.com',
       password: 'test123!',
       first_name: 'Test',
       last_name: 'ViTest',
