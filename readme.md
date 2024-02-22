@@ -1,3 +1,5 @@
-# Pet project TMS (Ticket management service)
+# Radulagger
+<img src="public/logo.png" width="250px" height="250px"/>
 
-![image description](public/logo.png)
+## The future is here!!
+
