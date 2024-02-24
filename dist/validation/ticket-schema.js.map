@@ -1,1 +1,0 @@
-{"version":3,"file":"ticket-schema.js","sourceRoot":"","sources":["../../src/validation/ticket-schema.ts"],"names":[],"mappings":"AAAA,OAAO,EAAE,IAAI,EAAE,MAAM,mBAAmB,CAAC;AAEzC,MAAM,CAAC,MAAM,kBAAkB,GAAG;IAChC,IAAI,CAAC,OAAO,CAAC,CAAC,cAAc,EAAE;IAC9B,IAAI,CAAC,aAAa,CAAC,CAAC,cAAc,EAAE,CAAC,QAAQ,CAAC,EAAE,GAAG,EAAE,IAAI,EAAE,CAAC;CAC7D,CAAC"}

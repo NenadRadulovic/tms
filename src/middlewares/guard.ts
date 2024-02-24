@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { verifyToken } from '../helpers/generate-jwt-token';
 import { Token } from '../common/user-types';
 import { merge } from 'lodash-es';
+import { AuthenticationError } from 'src/common/error.common';
 
 export const IsAuthenticated = async (
   req: Request,
@@ -12,7 +13,7 @@ export const IsAuthenticated = async (
   const { error, token }: Token = verifyToken(accessToken.split(' ')[1]);
   merge(req, { identity: token });
   if (error) {
-    return res.status(403).json({ error });
+    next(new AuthenticationError('Invalid token'));
   }
   next();
 };

@@ -15,21 +15,21 @@ model User {
   first_name       String
   last_name        String
   password         String
-  role             Role
+  role             Role     @default(Worker)
   tickets          Ticket[] @relation("Ticket_user")
   assigned_tickets Ticket[] @relation("Ticket_assigned_admin")
   created_at       DateTime @default(now())
-  updated_at       DateTime
+  updated_at       DateTime @updatedAt()
 }
 
 model Ticket {
   id                Int          @id @default(autoincrement())
   title             String
   description       String
-  status            TicketStatus
+  status            TicketStatus @default(Open)
   resolved_message  String?
   created_at        DateTime     @default(now())
-  updated_at        DateTime
+  updated_at        DateTime     @updatedAt()
   assigned_admin    User?        @relation("Ticket_assigned_admin", references: [id], fields: [assigned_admin_id], onDelete: SetNull)
   assigned_admin_id Int?
   user              User         @relation("Ticket_user", references: [id], fields: [user_id], onDelete: Cascade)

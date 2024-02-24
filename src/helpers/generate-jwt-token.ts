@@ -1,9 +1,8 @@
-import jwt from "jsonwebtoken";
-import { Token, TokenData } from "../common/user-types";
-import { randomInt } from "crypto";
-import { User } from "@prisma/client";
+import jwt from 'jsonwebtoken';
+import { Token, TokenData } from '../common/user-types';
+import { User } from '@prisma/client';
 
-const secret = process.env.JWT_SECRET || "secret";
+const secret = process.env.JWT_SECRET || 'secret';
 
 export const generateJWT = (user: User) => {
   const tokenData: TokenData = {
@@ -22,7 +21,7 @@ export const verifyToken = (token: string): Token => {
   } catch (err) {
     return {
       token: null,
-      error: "Invalid token",
+      error: 'Invalid token',
     };
   }
 };

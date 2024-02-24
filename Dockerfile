@@ -7,11 +7,12 @@ WORKDIR /usr/src/app
 COPY package*.json ./
 
 # Install app dependencies
-RUN npm install
+RUN npm ci
+
+# Install Prisma globally
+RUN npm i prisma -g
 
 COPY . .
-
-# RUN npm run build
 
 FROM node:20.2-alpine
 
@@ -21,9 +22,7 @@ COPY --from=builder /usr/src/app/prisma ./prisma
 COPY --from=builder /usr/src/app/.env ./.env
 COPY --from=builder /usr/src/app/.env.test ./.env.test
 
-RUN npm run prisma generate
-# RUN npm run prisma migrate deploy
-# RUN npm run dotenv -e .env.test -- npm run prisma db push --accept-data-loss
-
 EXPOSE 5000
+
+# RUN npm run build
 CMD [ "npm", "run", "start:dev" ]

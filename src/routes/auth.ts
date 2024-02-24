@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { register, login, me } from '../controllers/authenticationController';
+import { register, login, me } from '../controllers/authentication.controller';
 import { loginSchema, registerSchema } from '../validation/auth-schema';
 import { validateRequestSchema } from '../middlewares/validate-request-schema';
 import { IsAuthenticated } from '../middlewares/guard';

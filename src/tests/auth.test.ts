@@ -24,6 +24,7 @@ describe('Auth endpoint', async () => {
     const newUser = await client.user.findFirst({
       where: { email: userData.email },
     });
+    console.log(newUser);
     expect(status).toBe(201);
     expect(newUser).not.toBeNull();
     expect(newUser?.email).toEqual(userData.email);
@@ -41,14 +42,16 @@ describe('Auth endpoint', async () => {
       data: {
         ...userData,
         updated_at: new Date(),
+        created_at: new Date(),
         role: 'Admin',
       },
     });
+    console.log(newUser);
     const {
       status,
       body: { token },
-    } = await request(app).post('/auth/login').send(userData);
-
+      ...rest
+    } = await request(app).post('/auth/login').send(newUser);
     const testToken = generateJWT(newUser);
     expect(status).toBe(200);
     expect(token).not.toBeNull();

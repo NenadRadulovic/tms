@@ -1,7 +1,7 @@
 {
   "watch": ["src"],
   "ext": "ts, json",
-  "exec": "tsc && tsc-alias && ts-node --esm ./dist/index.js",
+  "exec": "tsc && tsc-alias && ts-node --esm ./dist/src/index.js",
   "verbose": true,
   "ignore": [],
   "execMap": {

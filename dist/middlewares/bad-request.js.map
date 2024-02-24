@@ -1,1 +1,0 @@
-{"version":3,"file":"bad-request.js","sourceRoot":"","sources":["../../src/middlewares/bad-request.ts"],"names":[],"mappings":"AAEA,MAAM,CAAC,MAAM,SAAS,GAAG,KAAK,EAAE,KAAY,EAAE,GAAY,EAAE,GAAa,EAAE,EAAE;IAC3E,OAAO,CAAC,GAAG,CAAC,OAAO,CAAC,CAAA;IACpB,OAAO,GAAG,CAAC,MAAM,CAAC,GAAG,CAAC,CAAC,IAAI,CAAC,EAAE,KAAK,EAAE,CAAC,CAAC;AACzC,CAAC,CAAC"}

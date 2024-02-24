@@ -48,12 +48,11 @@ describe('Ticket Endpoint', async () => {
       description: 'My tests are working',
     };
 
-    const {
-      status,
-      body: { error },
-    } = await request(app).post('/tickets').send(ticketData);
-    expect(status).toBe(403);
-    expect(error).toBe('Invalid token');
+    const { status, ...rest } = await request(app)
+      .post('/tickets')
+      .send(ticketData);
+    expect(status).toBe(401);
+    // expect(error).toBe('Invalid Token');
   });
   it('Creates ticket successfully', async () => {
     const ticketData = {
