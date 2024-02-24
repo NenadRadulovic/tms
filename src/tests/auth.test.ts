@@ -24,7 +24,6 @@ describe('Auth endpoint', async () => {
     const newUser = await client.user.findFirst({
       where: { email: userData.email },
     });
-    console.log(newUser);
     expect(status).toBe(201);
     expect(newUser).not.toBeNull();
     expect(newUser?.email).toEqual(userData.email);
@@ -46,7 +45,6 @@ describe('Auth endpoint', async () => {
         role: 'Admin',
       },
     });
-    console.log(newUser);
     const {
       status,
       body: { token },
