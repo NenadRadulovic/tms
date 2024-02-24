@@ -1,5 +1,3 @@
-import { JwtPayload } from 'jsonwebtoken';
-
 export type UserRole = 'Admin' | 'Worker';
 
 export interface UserDTO {
@@ -15,15 +13,4 @@ export interface LoginDTO {
   email: string;
   password: string;
   accessToken: string;
-}
-
-export interface TokenData {
-  id: number;
-  role: UserRole;
-  email: string;
-}
-
-export interface Token {
-  token: JwtPayload | string | null;
-  error: string | null;
 }

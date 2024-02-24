@@ -1,7 +1,7 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { NextFunction, Response, Request } from 'express';
-import { ERROR_NAMES, RequestError } from 'src/common/error.common';
-import logger from 'src/common/logger.common';
+import { NextFunction, Request, Response } from 'express';
+import { RequestError } from 'src/common/error.common';
 
 export const errorMiddleware = (
   err: RequestError,

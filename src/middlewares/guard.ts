@@ -1,8 +1,8 @@
+import { Token } from '@appTypes/token.types';
 import { NextFunction, Request, Response } from 'express';
-import { verifyToken } from '../helpers/generate-jwt-token';
-import { Token } from '../common/user-types';
 import { merge } from 'lodash-es';
 import { AuthenticationError } from 'src/common/error.common';
+import { verifyToken } from 'src/helpers/generate-jwt-token';
 
 export const IsAuthenticated = async (
   req: Request,

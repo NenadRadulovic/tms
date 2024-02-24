@@ -1,9 +1,9 @@
 // test/sample.test.ts
-import { afterAll, describe, expect, it, vi } from 'vitest';
-import request from 'supertest';
-import app from '../index';
 import client from '@dbPrisma/client';
-import { generateJWT } from '../helpers/generate-jwt-token';
+import { generateJWT } from '@helpers/generate-jwt-token';
+import request from 'supertest';
+import { afterAll, describe, expect, it, vi } from 'vitest';
+import app from '../../index';
 
 vi.mock('../prisma/client');
 
@@ -48,7 +48,6 @@ describe('Auth endpoint', async () => {
     const {
       status,
       body: { token },
-      ...rest
     } = await request(app).post('/auth/login').send(newUser);
     const testToken = generateJWT(newUser);
     expect(status).toBe(200);

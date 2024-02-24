@@ -18,10 +18,14 @@
     "paths": {
       "@services/*": ["src/services/*"],
       "@routes/*": ["src/routes/*"],
-      "@dbPrisma/*": ["./prisma/*"]
+      "@dbPrisma/*": ["./prisma/*"],
+      "@appTypes/*": ["src/types/*"],
+      "@helpers/*": ["src/helpers/*"],
+      "@dtos/*": ["src/dtos/*"],
+      "@appCommon/*": ["./src/common/*"],
     },
   },
-  "include": ["src/**/*", "./src/**/*", "prisma"],
+  "include": ["src/**/*", "./src/**/*", "prisma", "src/**/**/*"],
   "exclude": ["node_modules"],
   "ts-node": {
     "esm": true,

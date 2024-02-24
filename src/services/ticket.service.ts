@@ -10,6 +10,7 @@ import {
 } from './crud.service';
 import { EntityName } from 'src/types/service.types';
 import { TicketRequest } from 'src/dtos/ticket.dto';
+import { NotFoundError } from 'src/common/error.common';
 
 const model: EntityName = 'ticket';
 
@@ -68,7 +69,7 @@ const getTicketById = async (
     where: { id: ticketId, user_id: userId },
   });
   if (isNull(ticket)) {
-    throw new Error('Ticket not found');
+    throw new NotFoundError('Ticket not found');
   }
   return ticket;
 };

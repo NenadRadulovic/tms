@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { NextFunction, Request, Response } from 'express';
-import { generateJWT } from '../helpers/generate-jwt-token';
-import { UserDTO } from '../common/user-types';
-import userService from '@services/user.service';
-import { get } from 'lodash-es';
+import { UserRequest } from '@dtos/user.dto';
 import { User } from '@prisma/client';
+import userService from '@services/user.service';
+import { NextFunction, Request, Response } from 'express';
+import { get } from 'lodash-es';
+import { generateJWT } from '../helpers/generate-jwt-token';
 
 export const register = async (
   req: Request,
@@ -26,7 +26,7 @@ export const login = async (
   next: NextFunction,
 ) => {
   try {
-    const userData: User = req.body;
+    const userData: UserRequest = req.body;
     const user = await userService.getUserWhere(
       userData.email,
       userData.password,

@@ -9,7 +9,7 @@ module.exports = {
     eqeqeq: 'error',
     'no-console': 'warn',
     'no-undef': 'off',
-    'no-unused-vars': 'off',
+    'no-unused-vars': 'error',
     'prettier/prettier': 'error',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',

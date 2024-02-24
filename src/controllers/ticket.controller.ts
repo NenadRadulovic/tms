@@ -1,9 +1,9 @@
-import { NextFunction, Request, Response } from 'express';
+import { TicketRequest } from '@dtos/ticket.dto';
+import { User } from '@prisma/client';
 import ticketService from '@services/ticket.service';
-import { Ticket, User } from '@prisma/client';
-import { get } from 'lodash-es';
+import { NextFunction, Request, Response } from 'express';
 import { JwtPayload } from 'jsonwebtoken';
-import { TicketRequest } from 'src/dtos/ticket.dto';
+import { get } from 'lodash-es';
 
 export const getAllTickets = async (
   req: Request,

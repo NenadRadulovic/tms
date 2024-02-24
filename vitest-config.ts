@@ -1,8 +1,8 @@
 /// <reference types="vitest" />
 
+import { resolve } from 'path';
 import tsconfigPaths from 'vite-tsconfig-paths';
 import { configDefaults, defineConfig, type UserConfig } from 'vitest/config';
-import { resolve } from 'path';
 
 const config = defineConfig({
   test: {
@@ -10,7 +10,11 @@ const config = defineConfig({
   },
   plugins: [tsconfigPaths()],
   resolve: {
-    alias: [{ find: '@', replacement: resolve(__dirname, './src') }],
+    alias: [
+      { find: '@', replacement: resolve(__dirname, './src') },
+      { find: '@appCommon', replacement: resolve(__dirname, './src/common') },
+      { find: '@appTypes', replacement: resolve(__dirname, './src/types') },
+    ],
   },
 }) as UserConfig;
 

@@ -1,10 +1,10 @@
-import express, { NextFunction, Request, Response } from 'express';
-import dotenv from 'dotenv';
-import routes from './routes/index';
 import bodyParser from 'body-parser';
 import cors from 'cors';
+import dotenv from 'dotenv';
+import express, { NextFunction, Request, Response } from 'express';
 import path from 'path';
 import { errorMiddleware } from './middlewares/error.middleware';
+import routes from './routes/index';
 
 dotenv.config();
 const app = express();
@@ -24,6 +24,7 @@ app.use(routes());
 
 if (process.env.NODE_ENV !== 'test') {
   app.listen(port, () => {
+    // eslint-disable-next-line no-console
     console.log(`App listening on port ${port}`);
   });
 }

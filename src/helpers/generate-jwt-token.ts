@@ -1,10 +1,10 @@
+import { Token, TokenData } from '@appTypes/token.types';
 import jwt from 'jsonwebtoken';
-import { Token, TokenData } from '../common/user-types';
-import { User } from '@prisma/client';
+import { UserRequest, UserResponse } from 'src/dtos/user.dto';
 
 const secret = process.env.JWT_SECRET || 'secret';
 
-export const generateJWT = (user: User) => {
+export const generateJWT = (user: UserRequest | UserResponse) => {
   const tokenData: TokenData = {
     ...user,
   };

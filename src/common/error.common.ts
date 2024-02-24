@@ -30,7 +30,7 @@ export class NotFoundError extends RequestError {
   }
 }
 
-export class internalServerError extends RequestError {
+export class InternalServerError extends RequestError {
   constructor(message: string) {
     super(message, 500);
     this.name = ERROR_NAMES.internalServerError;

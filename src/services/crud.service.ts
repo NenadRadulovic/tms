@@ -1,6 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import client from '@dbPrisma/client';
-import { internalServerError } from 'src/common/error.common';
+import {
+  BadRequestError,
+  InternalServerError,
+  NotFoundError,
+} from 'src/common/error.common';
 import {
   CreateEntityData,
   CreateReturnData,
@@ -20,12 +24,16 @@ export async function createEntity<T extends EntityName>(
   args: CreateEntityData<T>,
 ): Promise<CreateReturnData<T>> {
   if (!client[entityType]?.create) {
-    throw new Error(`Invalid entity type: ${entityType}`);
+    throw new InternalServerError(`Invalid entity type: ${entityType}`);
   }
 
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
-  return await client[entityType].create({ ...args });
+  try {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    return await client[entityType].create({ ...args });
+  } catch (err) {
+    throw new BadRequestError(`Failed to create entity ${entityType}`);
+  }
 }
 
 export async function updateEntity<T extends EntityName>(
@@ -33,13 +41,16 @@ export async function updateEntity<T extends EntityName>(
   args: UpdateEntityData<T>,
 ): Promise<UpdateReturnData<T>> {
   if (!client[entityType]?.update) {
-    throw new Error(`Invalid entity type: ${entityType}`);
+    throw new InternalServerError(`Invalid entity type: ${entityType}`);
   }
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
-  const result = await client[entityType].update({ ...args });
 
-  return result;
+  try {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    return await client[entityType].update({ ...args });
+  } catch (err) {
+    throw new NotFoundError(`Entity not Found ${entityType}`);
+  }
 }
 
 export async function findEntity<T extends EntityName>(
@@ -47,14 +58,14 @@ export async function findEntity<T extends EntityName>(
   args: FindEntityData<T>,
 ): Promise<FindReturnData<T>> {
   if (!client[entityType]?.findUnique) {
-    throw new Error(`Invalid entity type: ${entityType}`);
+    throw new InternalServerError(`Invalid entity type: ${entityType}`);
   }
   try {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
     return await client[entityType].findUnique({ ...args });
   } catch (err) {
-    throw new internalServerError('Prisma error');
+    throw new InternalServerError('Prisma error');
   }
 }
 
@@ -63,14 +74,14 @@ export async function findManyEntities<T extends EntityName>(
   args?: FindManyEntityData<T>,
 ): Promise<FindManyReturnData<T>> {
   if (!client[entityType]?.findMany) {
-    throw new Error(`Invalid entity type: ${entityType}`);
+    throw new InternalServerError(`Invalid entity type: ${entityType}`);
   }
   try {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
     return await client[entityType].findMany({ ...args });
   } catch (err) {
-    throw new internalServerError('Prisma error');
+    throw new InternalServerError('Prisma error');
   }
 }
 
@@ -79,9 +90,13 @@ export async function deleteEntity<T extends EntityName>(
   args: DeleteEntityData<T>,
 ): Promise<DeleteReturnData<T>> {
   if (!client[entityType]?.delete) {
-    throw new Error(`Invalid entity type: ${entityType}`);
+    throw new InternalServerError(`Invalid entity type: ${entityType}`);
   }
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-expect-error
-  return await client[entityType].delete({ ...args });
+  try {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    return await client[entityType].delete({ ...args });
+  } catch (err) {
+    throw new InternalServerError('Prisma error');
+  }
 }

@@ -1,3 +1,8 @@
+import client from '@dbPrisma/client';
+import { faker } from '@faker-js/faker';
+import { User } from '@prisma/client';
+import ticketService from '@services/ticket.service';
+import { NotFoundError } from 'src/common/error.common';
 import {
   afterAll,
   afterEach,
@@ -7,14 +12,6 @@ import {
   it,
   vi,
 } from 'vitest';
-import request from 'supertest';
-import app from '../../index';
-import client from '@dbPrisma/client';
-import { generateJWT } from '../../helpers/generate-jwt-token';
-import { Ticket, User } from '@prisma/client';
-import { faker } from '@faker-js/faker';
-import ticketService from '@services/ticket.service';
-import { beforeEach } from 'node:test';
 
 vi.mock('../../prisma/client');
 
@@ -44,8 +41,8 @@ beforeAll(async () => {
   });
 });
 
-describe('Ticket UNIT tests', async () => {
-  it('Creates Ticket', async () => {
+describe('Ticket Unit tests', async () => {
+  it('Creates Ticket OK', async () => {
     const ticketData = {
       description: faker.lorem.words(100),
       title: faker.airline.airport().name,
@@ -53,7 +50,7 @@ describe('Ticket UNIT tests', async () => {
     const ticket = await ticketService.createTicket(ticketData, worker);
     expect(ticket).not.toBeNull();
   });
-  it('Updates Ticket', async () => {
+  it('Updates Ticket OK', async () => {
     const ticketData = {
       description: faker.lorem.words(100),
       title: faker.airline.airport().name,
@@ -67,7 +64,7 @@ describe('Ticket UNIT tests', async () => {
     expect(updatedTicket.description).not.toBe(ticket.description);
     expect(updatedTicket.status).toBe('On_Hold');
   });
-  it('Gets Ticket By ID', async () => {
+  it('Gets Ticket By Id OK', async () => {
     const ticketData = {
       description: faker.lorem.words(100),
       title: faker.airline.airport().name,
@@ -86,7 +83,19 @@ describe('Ticket UNIT tests', async () => {
     expect(getTicketWithWorkerId).not.toBeNull();
     expect(getTicketWithWorkerId.id).toBe(ticket.id);
   });
-  it('Get All tickets', async () => {
+  it('Deletes Ticket OK', async () => {
+    const ticketData = {
+      description: faker.lorem.words(100),
+      title: faker.airline.airport().name,
+    };
+    const ticket = await ticketService.createTicket(ticketData, worker);
+    expect(ticket).not.toBeNull();
+    await ticketService.deleteTicket(ticket.id);
+    expect(
+      async () => await ticketService.getTicketById(ticket.id),
+    ).rejects.toThrow(NotFoundError);
+  });
+  it('Get All tickets OK', async () => {
     const ticketData = {
       description: faker.lorem.words(100),
       title: faker.airline.airport().name,
@@ -99,5 +108,24 @@ describe('Ticket UNIT tests', async () => {
     }
     tickets = await ticketService.getAllTickets();
     expect(tickets.length).toBe(10);
+  });
+  it('Gets empty array when No Tickets OK', async () => {
+    const tickets = await ticketService.getAllTickets();
+    expect(tickets.length).toBe(0);
+  });
+  it('Updates non existant ticket NOT OK', async () => {
+    expect(
+      async () =>
+        await ticketService.updateTicket(4910231232132121, {
+          title: faker.commerce.product(),
+          description: faker.commerce.department(),
+          status: 'On_Hold',
+        }),
+    ).rejects.toThrow(NotFoundError);
+  });
+  it('Throws error when getting ticket by invalid Id NOT OK', async () => {
+    expect(
+      async () => await ticketService.getTicketById(123123),
+    ).rejects.toThrow(NotFoundError);
   });
 });
