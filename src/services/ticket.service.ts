@@ -1,6 +1,8 @@
-import { Ticket, User } from '@prisma/client';
-import client from '@dbPrisma/client';
+import { Ticket } from '@prisma/client';
 import { isNull } from 'lodash-es';
+import { NotFoundError } from 'src/common/error.common';
+import { AssignedTicketResponse, TicketRequest } from 'src/dtos/ticket.dto';
+import { EntityName } from 'src/types/service.types';
 import {
   createEntity,
   deleteEntity,
@@ -8,21 +10,18 @@ import {
   findManyEntities,
   updateEntity,
 } from './crud.service';
-import { EntityName } from 'src/types/service.types';
-import { TicketRequest } from 'src/dtos/ticket.dto';
-import { NotFoundError } from 'src/common/error.common';
 
 const model: EntityName = 'ticket';
 
 const createTicket = async (
   ticketData: TicketRequest,
-  userData: User,
+  userID: number,
 ): Promise<Ticket> => {
   const newTicket = await createEntity(model, {
     data: {
       title: ticketData.title,
       description: ticketData.description,
-      user_id: userData.id,
+      user_id: userID,
     },
   });
   return newTicket;
@@ -44,16 +43,16 @@ const updateTicket = async (
 const assignTicket = async (
   adminId: number,
   ticketId: number,
-): Promise<Ticket> => {
-  const ticket = await client.ticket.update({
-    where: {
-      id: ticketId,
-    },
+): Promise<AssignedTicketResponse> => {
+  const ticket = await updateEntity(model, {
     data: {
       assigned_admin_id: adminId,
     },
+    where: {
+      id: ticketId,
+    },
   });
-  return ticket;
+  return { adminId: ticket.assigned_admin_id as number, ticketId: ticket.id };
 };
 const getAllTickets = async (userId?: number): Promise<Ticket[]> => {
   const tickets = await findManyEntities(model, {

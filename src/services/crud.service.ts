@@ -81,7 +81,7 @@ export async function findManyEntities<T extends EntityName>(
     // @ts-expect-error
     return await client[entityType].findMany({ ...args });
   } catch (err) {
-    throw new InternalServerError('Prisma error');
+    throw new NotFoundError(`Entity not Found ${entityType}`);
   }
 }
 
@@ -97,6 +97,6 @@ export async function deleteEntity<T extends EntityName>(
     // @ts-expect-error
     return await client[entityType].delete({ ...args });
   } catch (err) {
-    throw new InternalServerError('Prisma error');
+    throw new NotFoundError(`Entity not Found ${entityType}`);
   }
 }

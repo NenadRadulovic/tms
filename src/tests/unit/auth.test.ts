@@ -7,6 +7,7 @@ import { generateJWT, verifyToken } from '../../helpers/generate-jwt-token';
 describe('JWT Token Logic unit tests', async () => {
   it('Creates JWT Token', async () => {
     const userData: UserRequest = {
+      id: 321,
       email: 'testuser2@yopmail.com',
       password: 'test123!',
       first_name: 'Test',
@@ -18,6 +19,7 @@ describe('JWT Token Logic unit tests', async () => {
   });
   it('Decodes JWT Token OK', async () => {
     const userData: UserRequest = {
+      id: 123,
       email: 'loginUser@yopmail.com',
       password: 'test123!',
       first_name: 'Test',

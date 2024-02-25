@@ -8,11 +8,11 @@ export interface UserRequest extends Partial<User> {
   [key: string]: unknown;
 }
 
-export interface UserResponse extends Partial<User> {
+export interface UserResponse extends Omit<Partial<User>, 'password'> {
   id: number;
   email: string;
-  password: string;
   first_name: string;
   last_name: string;
   tickets?: Partial<Ticket>[];
+  [key: string]: unknown;
 }

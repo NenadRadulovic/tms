@@ -7,7 +7,10 @@
   },
   "host": "localhost:5000",
   "basePath": "/",
-  "schemes": ["http", "https"],
+  "schemes": [
+    "http",
+    "https"
+  ],
   "paths": {
     "/auth/register": {
       "post": {
@@ -68,9 +71,16 @@
           },
           "400": {
             "description": "Bad Request"
-          },
-          "403": {
-            "description": "Forbidden"
+          }
+        }
+      }
+    },
+    "/swagger": {
+      "get": {
+        "description": "",
+        "responses": {
+          "default": {
+            "description": ""
           }
         }
       }
@@ -88,12 +98,6 @@
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "403": {
-            "description": "Forbidden"
           }
         }
       },
@@ -109,12 +113,6 @@
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "403": {
-            "description": "Forbidden"
           }
         }
       }
@@ -141,9 +139,6 @@
           },
           "400": {
             "description": "Bad Request"
-          },
-          "403": {
-            "description": "Forbidden"
           }
         }
       },
@@ -165,12 +160,6 @@
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "403": {
-            "description": "Forbidden"
           }
         }
       },
@@ -192,12 +181,6 @@
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "403": {
-            "description": "Forbidden"
           }
         }
       }
@@ -227,12 +210,6 @@
         "responses": {
           "200": {
             "description": "OK"
-          },
-          "400": {
-            "description": "Bad Request"
-          },
-          "403": {
-            "description": "Forbidden"
           }
         }
       }

@@ -11,3 +11,8 @@ export interface TicketResponse extends Partial<Ticket> {
   description: string;
   user: Partial<User>;
 }
+
+export interface AssignedTicketResponse {
+  ticketId: number;
+  adminId: number;
+}

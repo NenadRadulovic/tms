@@ -1,5 +1,5 @@
 import { TicketRequest } from '@dtos/ticket.dto';
-import { User } from '@prisma/client';
+import { UserRequest } from '@dtos/user.dto';
 import ticketService from '@services/ticket.service';
 import { NextFunction, Request, Response } from 'express';
 import { JwtPayload } from 'jsonwebtoken';
@@ -45,10 +45,13 @@ export const createTicket = async (
 ) => {
   try {
     const ticketData: TicketRequest = req.body;
-    const user: JwtPayload = get<JwtPayload, 'identity'>(req, 'identity');
+    const user: JwtPayload & UserRequest = get<JwtPayload, 'identity'>(
+      req,
+      'identity',
+    );
     const newTicket = await ticketService.createTicket(
       ticketData,
-      user as User,
+      user?.id ?? -1,
     );
     return res.status(200).json({ data: newTicket });
   } catch (err) {

@@ -1,8 +1,8 @@
 // test/sample.test.ts
 import client from '@dbPrisma/client';
-import { UserRequest } from '@dtos/user.dto';
 import { generateJWT } from '@helpers/generate-jwt-token';
-import { Role } from '@prisma/client';
+import { Role, User } from '@prisma/client';
+import ticketService from '@services/ticket.service';
 import request from 'supertest';
 import { afterAll, beforeAll, describe, expect, it, vi } from 'vitest';
 import app from '../../index';
@@ -16,7 +16,8 @@ afterAll(async () => {
   ]);
 });
 
-let worker: UserRequest;
+let worker: User;
+let admin: User;
 
 beforeAll(async () => {
   worker = await client.user.create({
@@ -25,8 +26,16 @@ beforeAll(async () => {
       password: 'test123!',
       first_name: 'Test',
       last_name: 'ViTest',
-      updated_at: new Date(),
       role: Role.Worker,
+    },
+  });
+  admin = await client.user.create({
+    data: {
+      email: 'admin@yopmail.com',
+      password: 'test123!',
+      first_name: 'Test',
+      last_name: 'ViTest',
+      role: Role.Admin,
     },
   });
 });
@@ -41,6 +50,25 @@ describe('Ticket Endpoint', async () => {
     const { status } = await request(app).post('/tickets').send(ticketData);
     expect(status).toBe(401);
     // expect(error).toBe('Invalid Token');
+  });
+  it('Assigns Ticket To admin', async () => {
+    const adminToken = generateJWT(admin);
+    const ticketData = {
+      title: 'Test Title',
+      description: 'My tests are working',
+    };
+    const ticket = await ticketService.createTicket(ticketData, worker.id);
+
+    const { status, body } = await request(app)
+      .post('/assign_ticket')
+      .set('Authorization', `bearer ${adminToken}`)
+      .send({
+        ticket_id: ticket.id,
+      });
+    const { data } = body;
+    expect(status).toBe(200);
+    expect(data.adminId).toBe(admin.id);
+    expect(data.ticketId).toBe(ticket.id);
   });
   it('Creates ticket successfully', async () => {
     const ticketData = {

@@ -32,11 +32,13 @@ describe('User Unit tests', async () => {
     };
     const user = await userService.createUser(userData);
     const updatedUser = await userService.updateUser(user.id, {
-      ...user,
-      password: 'NewPassword123!',
+      ...userData,
+      first_name: 'updateTest',
+      last_name: 'ViTestUpdate',
     });
+    expect(updatedUser.first_name).not.toBe(user.first_name);
+    expect(updatedUser.last_name).not.toBe(user.last_name);
     //Compare updated password it should not match
-    expect(updatedUser.password).not.toBe(user.password);
   });
   it('Gets user by Id OK', async () => {
     const userData = {

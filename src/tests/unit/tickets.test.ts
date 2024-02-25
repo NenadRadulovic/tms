@@ -47,7 +47,7 @@ describe('Ticket Unit tests', async () => {
       description: faker.lorem.words(100),
       title: faker.airline.airport().name,
     };
-    const ticket = await ticketService.createTicket(ticketData, worker);
+    const ticket = await ticketService.createTicket(ticketData, worker.id);
     expect(ticket).not.toBeNull();
   });
   it('Updates Ticket OK', async () => {
@@ -55,7 +55,7 @@ describe('Ticket Unit tests', async () => {
       description: faker.lorem.words(100),
       title: faker.airline.airport().name,
     };
-    const ticket = await ticketService.createTicket(ticketData, worker);
+    const ticket = await ticketService.createTicket(ticketData, worker.id);
     const updatedTicket = await ticketService.updateTicket(ticket.id, {
       title: ticket.title,
       description: faker.commerce.department(),
@@ -69,7 +69,7 @@ describe('Ticket Unit tests', async () => {
       description: faker.lorem.words(100),
       title: faker.airline.airport().name,
     };
-    const ticket = await ticketService.createTicket(ticketData, worker);
+    const ticket = await ticketService.createTicket(ticketData, worker.id);
     const getTicket = await ticketService.getTicketById(ticket.id);
 
     expect(getTicket).not.toBeNull();
@@ -88,7 +88,7 @@ describe('Ticket Unit tests', async () => {
       description: faker.lorem.words(100),
       title: faker.airline.airport().name,
     };
-    const ticket = await ticketService.createTicket(ticketData, worker);
+    const ticket = await ticketService.createTicket(ticketData, worker.id);
     expect(ticket).not.toBeNull();
     await ticketService.deleteTicket(ticket.id);
     expect(
@@ -104,7 +104,7 @@ describe('Ticket Unit tests', async () => {
     expect(tickets.length).toBe(0);
 
     for (let i = 0; i < 10; i++) {
-      await ticketService.createTicket(ticketData, worker);
+      await ticketService.createTicket(ticketData, worker.id);
     }
     tickets = await ticketService.getAllTickets();
     expect(tickets.length).toBe(10);

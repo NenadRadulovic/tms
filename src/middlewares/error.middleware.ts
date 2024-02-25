@@ -12,7 +12,7 @@ export const errorMiddleware = (
   // if (err.name === ERROR_NAMES.internalServerError) {
   //   logger.log('fatal', err.message);
   // } else {
-  //   logger.log('error', err.message);
+  //   logger.log('error', err.message.toString());
   // }
   return res
     .setHeader('Content-Type', 'application/json')
