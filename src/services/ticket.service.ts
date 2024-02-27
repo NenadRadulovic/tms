@@ -1,8 +1,12 @@
-import { Ticket } from '@prisma/client';
+import { Ticket, User } from '@prisma/client';
 import { isNull } from 'lodash-es';
-import { NotFoundError } from 'src/common/error.common';
+import { AuthorizationError, NotFoundError } from 'src/common/error.common';
 import { AssignedTicketResponse, TicketRequest } from 'src/dtos/ticket.dto';
-import { EntityName } from 'src/types/service.types';
+import {
+  EntityName,
+  FindManyEntityData,
+  TicketQuery,
+} from 'src/types/service.types';
 import {
   createEntity,
   deleteEntity,
@@ -54,12 +58,56 @@ const assignTicket = async (
   });
   return { adminId: ticket.assigned_admin_id as number, ticketId: ticket.id };
 };
-const getAllTickets = async (userId?: number): Promise<Ticket[]> => {
-  const tickets = await findManyEntities(model, {
-    where: { user_id: userId },
-  });
-  return tickets;
+
+const getWorkerTicket = async (
+  args: FindManyEntityData<'ticket'> = {},
+): Promise<Ticket[]> => {
+  return await findManyEntities(model, args);
 };
+
+const getAdminTicket = async (
+  args: FindManyEntityData<'ticket'> = {},
+): Promise<Ticket[]> => {
+  return await findManyEntities(model, args);
+};
+
+const getAllTickets = async (
+  user: User,
+  args: TicketQuery = {},
+): Promise<Ticket[]> => {
+  switch (user.role) {
+    case 'Worker':
+      return await getWorkerTicket({
+        where: {
+          user_id: user.id,
+          status: args.status,
+        },
+        orderBy: {
+          created_at: args.created_at,
+        },
+      });
+    case 'Admin':
+      return await getAdminTicket({
+        where: {
+          OR: [
+            {
+              user_id: user.id,
+            },
+            {
+              assigned_admin_id: user.id,
+            },
+          ],
+          status: args.status,
+        },
+        orderBy: { created_at: args.created_at },
+      });
+    default:
+      throw new AuthorizationError(
+        'User role is not within the system requeirements',
+      );
+  }
+};
+
 const getTicketById = async (
   ticketId: number,
   userId?: number,

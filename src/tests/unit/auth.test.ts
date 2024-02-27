@@ -1,8 +1,18 @@
 // test/sample.test.ts
+import client from '@dbPrisma/client';
 import { Role } from '@prisma/client';
 import { UserRequest } from 'src/dtos/user.dto';
-import { describe, expect, it } from 'vitest';
+import { afterAll, describe, expect, it, vi } from 'vitest';
 import { generateJWT, verifyToken } from '../../helpers/generate-jwt-token';
+
+vi.mock('../../prisma/client');
+
+afterAll(async () => {
+  await client.$transaction([
+    client.ticket.deleteMany(),
+    client.user.deleteMany(),
+  ]);
+});
 
 describe('JWT Token Logic unit tests', async () => {
   it('Creates JWT Token', async () => {

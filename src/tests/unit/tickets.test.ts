@@ -2,6 +2,7 @@ import client from '@dbPrisma/client';
 import { faker } from '@faker-js/faker';
 import { User } from '@prisma/client';
 import ticketService from '@services/ticket.service';
+import moment from 'moment';
 import { NotFoundError } from 'src/common/error.common';
 import {
   afterAll,
@@ -100,17 +101,51 @@ describe('Ticket Unit tests', async () => {
       description: faker.lorem.words(100),
       title: faker.airline.airport().name,
     };
-    let tickets = await ticketService.getAllTickets();
+    let tickets = await ticketService.getAllTickets(worker);
     expect(tickets.length).toBe(0);
 
     for (let i = 0; i < 10; i++) {
       await ticketService.createTicket(ticketData, worker.id);
     }
-    tickets = await ticketService.getAllTickets();
+    tickets = await ticketService.getAllTickets(worker);
     expect(tickets.length).toBe(10);
   });
+  it('Tickets created_at filter OK', async () => {
+    const tickets = await ticketService.getAllTickets(worker);
+    expect(tickets.length).toBe(0);
+
+    for (let i = 0; i < 3; i++) {
+      const ticketData = {
+        description: faker.lorem.words(100),
+        title: faker.airline.airport().name,
+      };
+      await client.ticket.create({
+        data: {
+          ...ticketData,
+          user_id: worker.id,
+          created_at: new Date(
+            faker.date.between({ from: '2023-01-01', to: '2025-12-12' }),
+          ),
+        },
+      });
+    }
+
+    const ascTickets = await ticketService.getAllTickets(worker, {
+      created_at: 'asc',
+    });
+    let firstDate = ascTickets[0].created_at;
+    let secondDate = ascTickets[ascTickets.length - 1].created_at;
+    expect(moment(firstDate).isBefore(secondDate)).toBe(true);
+
+    const descTickets = await ticketService.getAllTickets(worker, {
+      created_at: 'desc',
+    });
+    firstDate = descTickets[0].created_at;
+    secondDate = descTickets[descTickets.length - 1].created_at;
+    expect(moment(firstDate).isAfter(secondDate)).toBe(true);
+  });
   it('Gets empty array when No Tickets OK', async () => {
-    const tickets = await ticketService.getAllTickets();
+    const tickets = await ticketService.getAllTickets(worker);
     expect(tickets.length).toBe(0);
   });
   it('Updates non existant ticket NOT OK', async () => {

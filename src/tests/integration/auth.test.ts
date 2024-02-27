@@ -1,6 +1,5 @@
 // test/sample.test.ts
 import client from '@dbPrisma/client';
-import { generateJWT } from '@helpers/generate-jwt-token';
 import request from 'supertest';
 import { afterAll, describe, expect, it, vi } from 'vitest';
 import app from '../../index';
@@ -8,7 +7,10 @@ import app from '../../index';
 vi.mock('../prisma/client');
 
 afterAll(async () => {
-  await client.$transaction([client.user.deleteMany()]);
+  await client.$transaction([
+    client.user.deleteMany(),
+    client.ticket.deleteMany(),
+  ]);
 });
 
 describe('Auth endpoint', async () => {
@@ -31,27 +33,15 @@ describe('Auth endpoint', async () => {
     expect(newUser?.last_name).toEqual(userData.last_name);
   });
   it('Logs in user', async () => {
-    const userData = {
-      email: 'loginUser@yopmail.com',
+    const loginData = {
+      email: 'testuser2@yopmail.com',
       password: 'test123!',
-      first_name: 'Test',
-      last_name: 'ViTest',
     };
-    const newUser = await client.user.create({
-      data: {
-        ...userData,
-        updated_at: new Date(),
-        created_at: new Date(),
-        role: 'Admin',
-      },
-    });
     const {
       status,
       body: { token },
-    } = await request(app).post('/auth/login').send(newUser);
-    const testToken = generateJWT(newUser);
+    } = await request(app).post('/auth/login').send(loginData);
     expect(status).toBe(200);
     expect(token).not.toBeNull();
-    expect(token).toEqual(testToken);
   });
 });

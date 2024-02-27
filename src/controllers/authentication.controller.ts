@@ -27,10 +27,7 @@ export const login = async (
 ) => {
   try {
     const userData: UserRequest = req.body;
-    const user = await userService.getUserWhere(
-      userData.email,
-      userData.password,
-    );
+    const user = await userService.login(userData.email, userData.password);
     const token = generateJWT(user);
     return res.status(200).json({ loggedIn: 'success', token });
   } catch (err) {

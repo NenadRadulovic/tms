@@ -1,7 +1,7 @@
 import { isNull, isUndefined } from 'lodash-es';
 import { BadRequestError, NotFoundError } from 'src/common/error.common';
 import { UserRequest, UserResponse } from 'src/dtos/user.dto';
-import { hashPassword } from 'src/helpers/crypto.helper';
+import { checkPassword, hashPassword } from 'src/helpers/crypto.helper';
 import { EntityName } from 'src/types/service.types';
 import {
   createEntity,
@@ -35,12 +35,16 @@ const getUserById = async (userId: number): Promise<UserResponse> => {
   return user;
 };
 
-const getUserWhere = async (
+const login = async (
   email: string,
   password: string,
 ): Promise<UserResponse> => {
-  const user = await findEntity(model, { where: { email, password } });
-  if (isNull(user) || isUndefined(user)) {
+  const user = await findEntity(model, { where: { email } });
+  const isPasswordCorrect = await checkPassword(
+    password,
+    user?.password as string,
+  );
+  if (isNull(user) || isUndefined(user) || !isPasswordCorrect) {
     throw new NotFoundError('Failed to login. Invalid credentials.');
   }
   return user;
@@ -74,5 +78,5 @@ export default {
   getUserById,
   updateUser,
   deleteUser,
-  getUserWhere,
+  login,
 };

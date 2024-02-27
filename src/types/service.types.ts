@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
-import { PrismaClient } from '@prisma/client';
+import { Prisma, PrismaClient, TicketStatus } from '@prisma/client';
 
 export type CrudOperation = 'create' | 'update' | 'findUnique' | 'delete';
 
@@ -70,10 +70,11 @@ export type FindReturnData<T extends EntityName> = PrismaClient[T] extends {
   : never;
 
 export type FindManyEntityData<T extends EntityName> = PrismaClient[T] extends {
-  findMany: (args: { where: infer Where }) => any;
+  findMany: (args: { where: infer Where; orderBy: infer OrderBy }) => any;
 }
   ? {
-      where: Where;
+      where?: Where;
+      orderBy?: OrderBy;
     }
   : never;
 
@@ -82,3 +83,8 @@ export type FindManyReturnData<T extends EntityName> = PrismaClient[T] extends {
 }
   ? ReturnType
   : never;
+
+export interface TicketQuery {
+  created_at?: Prisma.SortOrder;
+  status?: TicketStatus;
+}

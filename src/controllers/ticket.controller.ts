@@ -1,5 +1,7 @@
+import { TicketQuery } from '@appTypes/service.types';
 import { TicketRequest } from '@dtos/ticket.dto';
 import { UserRequest } from '@dtos/user.dto';
+import { User } from '@prisma/client';
 import ticketService from '@services/ticket.service';
 import { NextFunction, Request, Response } from 'express';
 import { JwtPayload } from 'jsonwebtoken';
@@ -11,8 +13,9 @@ export const getAllTickets = async (
   next: NextFunction,
 ) => {
   try {
-    const user = get<JwtPayload, 'identity'>(req, 'identity');
-    const tickets = await ticketService.getAllTickets(user.id);
+    const user = get<JwtPayload, 'identity'>(req, 'identity') as User;
+    const query: TicketQuery = req.query as TicketQuery;
+    const tickets = await ticketService.getAllTickets(user, query);
     return res.status(200).json({ data: tickets });
   } catch (err) {
     next(err);
