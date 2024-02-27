@@ -142,20 +142,19 @@ describe('Ticket Endpoint', async () => {
     expect(data.length).not.toBe(0);
   });
   it('Gets tickets status filter OK', async () => {
-    //update some tickets to closed status
-    const dbTickets = await ticketService.getAllTickets(worker);
-    Promise.all(
-      dbTickets.slice(0, 3).map(
-        async (tk) =>
-          await ticketService.updateTicket(tk.id, {
-            status: 'Closed',
-            description: tk.description,
-            title: tk.status,
-          }),
-      ),
+    const closedTicket = await ticketService.createTicket(
+      {
+        description: 'test closed',
+        title: 'Test closed',
+      },
+      worker.id,
     );
-    // console.log(test);
-    // console.log(worker);
+    //update some tickets to closed status
+    await ticketService.updateTicket(closedTicket.id, {
+      status: 'Closed',
+      description: closedTicket.description,
+      title: closedTicket.status,
+    });
     const workerToken = generateJWT(worker);
     const {
       status,
